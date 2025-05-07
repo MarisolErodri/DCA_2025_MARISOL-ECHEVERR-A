@@ -1,0 +1,89 @@
+---
+title: "CAPÍTULO III"
+author: Marisol Guadalupe Echeverría Rodríguez
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+Función de densidad
+
+
+```{r}
+
+f_den <- function(x, B=1){
+  if(x>=-B & x<=0){
+    y <- 1/B^2 *x +1/B
+  }else if(x>0 & x<=B){
+    y <- -1/B^2 *x +1/B
+}else{
+    y <- 0
+}
+  return(y)
+}
+
+fv_den <- Vectorize(f_den, "x")
+
+f_dis <- function(x, B=1){
+  if(x<(-1)*B){
+    y <- 0}else if(x>=-B & x<=0){
+    y <- (x+B)*(fv_den(x)/2)
+  }else if(x>0 & x<=B){
+    y <- 1- (B-x)*fv_den(x)/2
+} else{
+    y <- 0
+}
+  return(y)
+}
+
+
+x <- seq(-1.5, 1.5, length.out=500)
+y <- sapply(x, f_den)
+
+ggplot()+
+  geom_line(aes(x,y), color="purple", , linewidth=1.5)+
+  geom_function(fun = fv_den, color="seagreen1", linewidth=0.5)+
+  xlim(-1.5, 1.5)+
+  theme_bw()
+
+```
+
+
+```{r}
+decision <- function(Vj, Vi, B=1){
+  Vji <- Vj-Vi
+  PVj <- f_dis(Vji)
+  PVi <- 1 - PVj #Declararlo para saber a cuánto equivale
+  
+#Centro horizontal del área sombreada y no sombreada
+Centro_sombreada_h <- (-B +Vji)/2
+Centro_nsombreada_h <- (Vji+B)/2
+
+#Centro vertical del área sombreada y no sombreada
+Centro_sombreada_v <- fv_den(Centro_sombreada_h)/2
+Centro_nsombreada_v <- fv_den(Centro_nsombreada_h)/2
+
+  ggplot()+
+  geom_function(fun = fv_den, color="turquoise1", linewidth=0.5, xlim=c(-B-0.1, B+0.1))+
+  stat_function(fun = fv_den, geom= "area", fill="violetred1", alpha=0.5, xlim=c(-B, Vji))+ 
+  stat_function(fun = fv_den, geom = "area", fill = "thistle1", alpha = 0.5, xlim = c(Vji, B))+
+  
+    geom_text(aes(x=Centro_sombreada_h, y=Centro_sombreada_v), label=paste0("Prob(Vj)=", round(PVj,2)), size=4)+
+  geom_text(aes(x=Centro_nsombreada_h, y=Centro_nsombreada_v), label=paste0("Prob(Vi)=", round(PVi,2)), size=3)+
+  labs(title="Probabilidad de elección", 
+       subtitle = "Utilidades observadas Vj=6, Vi=5.5, Vj-Vi=0.5",
+       x="Ej - Ei", 
+       y= "Densidad de probabilidad")+
+  theme_bw()+
+    theme(plot.title = element_text(hjust = 0.5),
+          plot.subtitle = element_text(hjust = 0.5))
+  
+  
+}
+
+
+decision(Vj=6, Vi=5.5)
+```
