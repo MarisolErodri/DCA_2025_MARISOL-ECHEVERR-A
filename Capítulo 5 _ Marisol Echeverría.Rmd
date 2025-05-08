@@ -1,0 +1,121 @@
+---
+title: "CAPÍTULO V"
+author: Marisol Guadalupe Echeverría Rodríguez
+output: html_document
+---
+
+```{r, echo=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(tidyverse)
+library(discrtr) # A companion package for the book Introduction to Discrete Choice Analysis with `R`
+library(dplyr) # A Grammar of Data Manipulation
+library(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
+library(mlogit) # Multinomial Logit Models
+library(readr) # Read Rectangular Text Data
+library(gplots) # Various R Programming Tools for Plotting Data
+#library(ggmosaic) # Mosaic Plots in the 'ggplot2' Framework
+library(treemapify)
+library(ggridges)
+library(ggalluvial)
+library(evd)
+#library(htmlwidgets) # HTML Widgets for R
+library(kableExtra) # Construct Complex Table with kable and Pipe Syntax
+#library(plotly) # Create interactive web graphics
+library(tidyr) # Tidy messy data
+#library(webshot2) # Take screenshots of web pages
+library(evd)
+```
+
+Ejercicios del Capítulo 6 <b>"Behavioral Insights from Choice Models"</b>. Considerar como referencia las notas del respectivo capítulo.
+
+1. ¿Cuál es la diferencia entre un efecto marginal y una elasticidad?
+
+Un efecto marginal mide cuánto cambia una variable dependiente (y) cuando una variable independiente (xk) se incrementa en una unidad. En contraste, la elasticidad mide la sensibilidad de la variable dependiente (y) a los cambios porcentuales en una variable independiente (xk).
+
+2. ¿Por qué no es apropiado calcular la elasticidad de una variable dummy?
+
+Los efectos marginales y las elasticidades explicadas previamente no son adecuadas para variables cualitativas o binarias (dummy). Esto se debe a que la idea de un cambio marginal o porcentual no tiene sentido para este tipo de variables.
+
+3. Usa el Modelo 3 de este capítulo y calcula los efectos marginales y las elasticidades del costo de operación en la media de todas las variables.
+
+```{r}
+
+data("Heating")
+
+H <- Heating %>% mlogit.data(shape = "wide", choice="depvar", varying=c(3:12))
+
+model3 <- mlogit(depvar ~ ic + oc, data = Heating, shape = "wide", choice = "depvar", reflevel = "ec", varying = 3:12
+)
+
+medias <- Heating[1, ]
+
+mean_cost <- Heating %>%
+  select(starts_with("ic"), starts_with("oc")) %>%
+  summarise(across(.cols = everything(), mean))
+
+medias[3:12] <- mean_cost
+
+efectos_marginales <- effects(model3, covariate = "oc", type = "ra", data = mlogit.data(medias, shape = "wide", choice = "depvar", varying = 3:12))
+print("Efectos marginales:")
+print(efectos_marginales)
+
+elasticidades <- effects(model3, covariate = "oc", type = "rr", data = mlogit.data(medias, shape = "wide", choice = "depvar", varying = 3:12))
+print("Elasticidades:")
+print(elasticidades)
+
+```
+
+4. Usa el Modelo 3 de este capítulo para calcular el reembolso necesario para alcanzar una tasa de penetración del 10% de las bombas de calor.
+
+```{r}
+
+rebates <- seq(0, 2000, by = 50)
+
+hp_shares <- numeric(length(rebates))
+
+Heating_original <- Heating
+
+for (i in seq_along(rebates)) {
+  Heating_temp <- Heating_original
+  Heating_temp$ic.hp <- Heating_temp$ic.hp - rebates[i]
+  
+  Heating_long <- mlogit.data(Heating_temp, shape = "wide", choice = "depvar",
+                              varying = 3:12, id.var = "idcase")
+  
+  prob_temp <- predict(model3, newdata = Heating_long, type = "probabilities")
+  
+  hp_shares[i] <- mean(prob_temp[, "hp"])
+}
+
+target_share <- 0.10
+required_rebate <- rebates[min(which(hp_shares >= target_share))]
+required_rebate
+
+```
+
+El análisis revela que el subsidio mínimo necesario es de 450 unidades monetarias. En otras palabras, este modelo sugiere que se requiere una disminución de costos de 450 para lograr el nivel objetivo.
+
+Estima un nuevo modelo que extienda el Modelo 3 incorporando la edad del jefe del hogar. Usa el sistema eléctrico de habitación (“er”) como nivel de referencia.
+
+```{r}
+
+model4 <- mlogit(depvar ~ ic + oc | agehed, Heating, shape = "wide", choice = "depvar", reflevel = "er", varying = c(3:12))
+
+summary(model4)
+
+```
+
+5. Usa el likelihood ratio test para comparar tu nuevo modelo con el Modelo 3. Discute los resultados.
+
+```{r}
+
+lrtest(model3, model4)
+
+```
+
+La inclusión de la variable 'agehed' produce una ligera mejora en el ajuste del modelo (evidenciado por el aumento en el likelihood ratio test), pero esta diferencia no es estadísticamente significativa. Esto sugiere que la edad del jefe de hogar no influye de manera importante en la decisión de elegir bombas de calor en esta situación particular.
+
+6. ¿Es significativo el cociente entre el coeficiente del costo de instalación (u operación) y el coeficiente de la edad del jefe del hogar? Explica.
+
+No es válido interpretar directamente los cocientes $\frac{ic}{agehed}$ y $\frac{oc}{agehed}$, ya que representan distintos tipos de variables.
