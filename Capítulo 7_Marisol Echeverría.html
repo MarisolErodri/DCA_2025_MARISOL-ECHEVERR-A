@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Capítulo 7</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Capítulo 7_Marisol Echeverría_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Capítulo 7_Marisol Echeverría_files/libs/quarto-html/quarto.js"></script>
+<script src="Capítulo 7_Marisol Echeverría_files/libs/quarto-html/popper.min.js"></script>
+<script src="Capítulo 7_Marisol Echeverría_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Capítulo 7_Marisol Echeverría_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Capítulo 7_Marisol Echeverría_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Capítulo 7_Marisol Echeverría_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Capítulo 7_Marisol Echeverría_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Capítulo 7_Marisol Echeverría_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Capítulo 7_Marisol Echeverría_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Capítulo 7</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.4.0     ✔ purrr   1.0.1
+✔ tibble  3.2.1     ✔ dplyr   1.1.2
+✔ tidyr   1.2.1     ✔ stringr 1.5.0
+✔ readr   2.1.3     ✔ forcats 0.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(discrtr) <span class="co"># A companion package for the book Introduction to Discrete Choice Analysis with `R`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'discrtr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># A Grammar of Data Manipulation</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># Create Elegant Data Visualisations Using the Grammar of Graphics</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlogit) <span class="co"># Multinomial Logit Models</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'mlogit' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: dfidx
+
+Attaching package: 'dfidx'
+
+The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr) <span class="co"># Read Rectangular Text Data</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gplots) <span class="co"># Various R Programming Tools for Plotting Data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'gplots'
+
+The following object is masked from 'package:stats':
+
+    lowess</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(ggmosaic) # Mosaic Plots in the 'ggplot2' Framework</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(treemapify)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'treemapify' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggridges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggridges' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggalluvial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggalluvial' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra) <span class="co"># Construct Complex Table with kable and Pipe Syntax</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'kableExtra' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(plotly) # Create interactive web graphics</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># Tidy messy data</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#library(webshot2) # Take screenshots of web pages</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(evd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'evd' was built under R version 4.2.3</code></pre>
+</div>
+</div>
+<section id="what-is-the-difference-between-a-marginal-effect-and-an-elasticity" class="level1">
+<h1>1. What is the difference between a marginal effect and an elasticity?</h1>
+<ul>
+<li><p><strong>Efecto marginal:</strong> Se refiere a la variación en la variable dependiente (o resultado) cuando la variable independiente (o explicativa) cambia en una unidad, manteniendo constantes todas las demás variables. Es la pendiente de la curva de predicción en un punto específico, y se utiliza para entender cómo una variable afecta a otra.</p></li>
+<li><p><strong>Elasticidad:</strong> Es una medida que expresa cómo varía porcentualmente una variable cuando otra también cambia en términos porcentuales. Por ejemplo, la elasticidad-precio de la demanda muestra en qué porcentaje se modifica la cantidad demandada ante un cambio porcentual en el precio. Esta medida es útil para comparar la sensibilidad relativa de distintas variables, incluso en contextos y niveles diferentes.</p></li>
+</ul>
+</section>
+<section id="why-is-it-inappropriate-to-calculate-the-elasticity-of-a-dummy-variable" class="level1">
+<h1>2. Why is it inappropriate to calculate the elasticity of a dummy variable?</h1>
+<p>Calcular la elasticidad para una variable dummy no es adecuado, ya que esta medida se basa en cambios porcentuales relativos, mientras que una dummy solo puede tomar los valores 0 o 1, representando cambios discretos en lugar de proporcionales. Por ello, no es posible aplicar un cambio porcentual a una dummy, ni utilizar la fórmula tradicional de elasticidad, que requiere variaciones continuas o proporcionales. En su lugar, el coeficiente de una dummy en una regresión refleja una diferencia absoluta o efecto entre grupos, no una elasticidad.</p>
+</section>
+<section id="usemodel-3-in-this-chapter-and-calculate-the-marginal-effects-and-the-elasticities-for-operating-cost-at-the-mean-of-all-variables." class="level1">
+<h1>3. UseModel 3 in this chapter and calculate the marginal effects and the elasticities for operating cost at the mean of all variables.</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Heating"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(Heating)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 900
+Columns: 16
+$ idcase &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, …
+$ depvar &lt;fct&gt; gc, gc, gc, er, er, gc, gc, gc, gc, gc, gc, gc, gc, gr, gc, gr,…
+$ ic.gc  &lt;dbl&gt; 866.00, 727.93, 599.48, 835.17, 755.59, 666.11, 670.10, 778.03,…
+$ ic.gr  &lt;dbl&gt; 962.64, 758.89, 783.05, 793.06, 846.29, 841.71, 941.25, 1022.10…
+$ ic.ec  &lt;dbl&gt; 859.90, 796.82, 719.86, 761.25, 858.86, 693.74, 633.63, 813.33,…
+$ ic.er  &lt;dbl&gt; 995.76, 894.69, 900.11, 831.04, 985.64, 862.56, 952.30, 1012.30…
+$ ic.hp  &lt;dbl&gt; 1135.50, 968.90, 1048.30, 1048.70, 883.05, 859.18, 1086.80, 990…
+$ oc.gc  &lt;dbl&gt; 199.69, 168.66, 165.58, 180.88, 174.91, 135.67, 191.84, 187.61,…
+$ oc.gr  &lt;dbl&gt; 151.72, 168.66, 137.80, 147.14, 138.90, 140.97, 147.57, 158.66,…
+$ oc.ec  &lt;dbl&gt; 553.34, 520.24, 439.06, 483.00, 404.41, 398.22, 478.36, 502.40,…
+$ oc.er  &lt;dbl&gt; 505.60, 486.49, 404.74, 425.22, 389.52, 371.04, 445.97, 464.77,…
+$ oc.hp  &lt;dbl&gt; 237.88, 199.19, 171.47, 222.95, 178.49, 209.27, 236.99, 203.78,…
+$ income &lt;dbl&gt; 7, 5, 4, 2, 2, 6, 4, 6, 5, 7, 5, 7, 5, 2, 3, 4, 6, 7, 6, 7, 5, …
+$ agehed &lt;dbl&gt; 25, 60, 65, 50, 25, 65, 35, 20, 60, 20, 60, 25, 35, 30, 35, 35,…
+$ rooms  &lt;dbl&gt; 6, 5, 2, 4, 6, 7, 2, 7, 6, 2, 6, 4, 3, 6, 2, 4, 2, 4, 2, 4, 5, …
+$ region &lt;fct&gt; ncostl, scostl, ncostl, scostl, valley, scostl, scostl, valley,…</code></pre>
+</div>
+</div>
+<section id="cálculo-de-los-efectos-marginales" class="level3">
+<h3 class="anchored" data-anchor-id="cálculo-de-los-efectos-marginales">Cálculo de los efectos marginales</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mean_data <span class="ot">&lt;-</span> Heating[<span class="dv">1</span>, ] </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>mean_ic <span class="ot">&lt;-</span> Heating <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"ic"</span>)) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>mean_oc <span class="ot">&lt;-</span> Heating <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"oc"</span>)) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>mean_data[<span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>] <span class="ot">&lt;-</span> mean_ic  </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>mean_data[<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>] <span class="ot">&lt;-</span> mean_oc </span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>mean_data_mlogit <span class="ot">&lt;-</span> <span class="fu">mlogit.data</span>(</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  mean_data, </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> <span class="st">"wide"</span>, </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">choice =</span> <span class="st">"depvar"</span>, </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">varying =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">12</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  depvar <span class="sc">~</span> ic <span class="sc">+</span> oc, </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Heating,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> <span class="st">"wide"</span>, </span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">choice =</span> <span class="st">"depvar"</span>, </span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">reflevel =</span> <span class="st">"ec"</span>,</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">varying =</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">12</span>) </span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="fu">effects</span>(</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  model3, </span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">covariate =</span> <span class="st">"oc"</span>, </span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"ra"</span>,  </span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> mean_data_mlogit</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>              ec            er            gc            gr            hp
+ec -0.0065244799  0.0004718878  0.0004718878  0.0004718877  0.0004718878
+er  0.0006241010 -0.0063722666  0.0006241010  0.0006241010  0.0006241010
+gc  0.0045085704  0.0045085705 -0.0024877975  0.0045085704  0.0045085705
+gr  0.0010045002  0.0010045002  0.0010045002 -0.0059918676  0.0010045002
+hp  0.0003873084  0.0003873084  0.0003873084  0.0003873084 -0.0066090593</code></pre>
+</div>
+</div>
+</section>
+<section id="cálculo-de-las-elasticidades" class="level3">
+<h3 class="anchored" data-anchor-id="cálculo-de-las-elasticidades">Cálculo de las elasticidades</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">effects</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  model3, </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">covariate =</span> <span class="st">"oc"</span>, </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"rr"</span>,  <span class="co"># Elasticidad (Relative)</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> mean_data_mlogit</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            ec          er          gc          gr         hp
+ec -3.11089165  0.22499750  0.22499750  0.22499750  0.2249975
+er  0.26819485 -2.73835328  0.26819486  0.26819486  0.2681949
+gc  0.77599637  0.77599638 -0.42818936  0.77599637  0.7759964
+gr  0.15516657  0.15516657  0.15516657 -0.92557230  0.1551666
+hp  0.08493646  0.08493646  0.08493646  0.08493646 -1.4493621</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="use-model-3-in-this-chapter-to-calculate-the-rebate-needed-to-reach-a-10-penetration-rate-of-heat-pumps." class="level1">
+<h1>4. Use Model 3 in this chapter to calculate the rebate needed to reach a 10% penetration rate of heat pumps.</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  depvar <span class="sc">~</span> ic <span class="sc">+</span> oc, </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Heating,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> <span class="st">"wide"</span>, </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">choice =</span> <span class="st">"depvar"</span>, </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">reflevel =</span> <span class="st">"ec"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">varying =</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">12</span>) </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(r) {</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  H_rebate <span class="ot">&lt;-</span> Heating <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ic.hp =</span> ic.hp <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> r))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  H_rebate_mlogit <span class="ot">&lt;-</span> <span class="fu">mlogit.data</span>(</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    H_rebate,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"wide"</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">choice =</span> <span class="st">"depvar"</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">varying =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">12</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(model3, <span class="at">newdata =</span> H_rebate_mlogit)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  mean_hp <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred[, <span class="st">"hp"</span>])</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mean_hp <span class="sc">-</span> <span class="fl">0.10</span>)</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Aplicando la función anterior</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">uniroot</span>(f, <span class="at">interval =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">tol =</span> <span class="fl">0.001</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>rebate_required <span class="ot">&lt;-</span> resultado<span class="sc">$</span>root</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>rebate_required<span class="sc">*</span><span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 40.00771</code></pre>
+</div>
+</div>
+</section>
+<section id="estimate-a-new-model-that-extends-model-3-by-introducing-the-age-of-the-household-head.-use-the-electric-room-system-er-as-the-reference-level." class="level1">
+<h1>Estimate a new model that extends Model 3 by introducing the age of the household head. Use the electric room system (“er”) as the reference level.</h1>
+</section>
+<section id="use-the-likelihood-ratio-test-to-compare-your-new-model-to-model-3.-discuss-the-results." class="level1">
+<h1>5. Use the likelihood ratio test to compare your new model to Model 3. Discuss the results.</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo 3 con referencia "er"</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>model3_er <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  depvar <span class="sc">~</span> ic <span class="sc">+</span> oc,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Heating,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> <span class="st">"wide"</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">choice =</span> <span class="st">"depvar"</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">reflevel =</span> <span class="st">"er"</span>,  </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">varying =</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">12</span>) </span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3_er)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+mlogit(formula = depvar ~ ic + oc, data = Heating, reflevel = "er", 
+    shape = "wide", choice = "depvar", varying = c(3:12), method = "nr")
+
+Frequencies of alternatives:choice
+      er       ec       gc       gr       hp 
+0.093333 0.071111 0.636667 0.143333 0.055556 
+
+nr method
+6 iterations, 0h:0m:0s 
+g'(-H)^-1g = 9.58E-06 
+successive function values within tolerance limits 
+
+Coefficients :
+                  Estimate  Std. Error z-value  Pr(&gt;|z|)    
+(Intercept):ec -0.19459102  0.20424212 -0.9527 0.3407184    
+(Intercept):gc -0.14245766  0.41023070 -0.3473 0.7283943    
+(Intercept):gr -1.54517369  0.43298757 -3.5686 0.0003588 ***
+(Intercept):hp -1.85343697  0.36195509 -5.1206 3.045e-07 ***
+ic             -0.00153315  0.00062086 -2.4694 0.0135333 *  
+oc             -0.00699637  0.00155408 -4.5019 6.734e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Log-Likelihood: -1008.2
+McFadden R^2:  0.013691 
+Likelihood ratio test : chisq = 27.99 (p.value = 8.3572e-07)</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>model4 <span class="ot">&lt;-</span> <span class="fu">mlogit</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  depvar <span class="sc">~</span> ic <span class="sc">+</span> oc <span class="sc">|</span> agehed,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Heating,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> <span class="st">"wide"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">choice =</span> <span class="st">"depvar"</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">reflevel =</span> <span class="st">"er"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">varying =</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">12</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+mlogit(formula = depvar ~ ic + oc | agehed, data = Heating, reflevel = "er", 
+    shape = "wide", choice = "depvar", varying = c(3:12), method = "nr")
+
+Frequencies of alternatives:choice
+      er       ec       gc       gr       hp 
+0.093333 0.071111 0.636667 0.143333 0.055556 
+
+nr method
+6 iterations, 0h:0m:0s 
+g'(-H)^-1g = 3.7E-05 
+successive function values within tolerance limits 
+
+Coefficients :
+                  Estimate  Std. Error z-value  Pr(&gt;|z|)    
+(Intercept):ec -1.23573437  0.54579124 -2.2641 0.0235670 *  
+(Intercept):gc -1.00448043  0.53688731 -1.8709 0.0613543 .  
+(Intercept):gr -2.57939938  0.61056437 -4.2246 2.393e-05 ***
+(Intercept):hp -2.10149168  0.63311233 -3.3193 0.0009024 ***
+ic             -0.00152526  0.00062225 -2.4512 0.0142385 *  
+oc             -0.00703320  0.00155731 -4.5163 6.294e-06 ***
+agehed:ec       0.02501028  0.01201972  2.0808 0.0374550 *  
+agehed:gc       0.02070566  0.00858773  2.4111 0.0159056 *  
+agehed:gr       0.02462347  0.01024474  2.4035 0.0162379 *  
+agehed:hp       0.00604848  0.01293750  0.4675 0.6401310    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Log-Likelihood: -1003.8
+McFadden R^2:  0.01805 
+Likelihood ratio test : chisq = 36.903 (p.value = 1.8391e-06)</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prueba</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: zoo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'zoo'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(model3_er, model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio test
+
+Model 1: depvar ~ ic + oc
+Model 2: depvar ~ ic + oc | agehed
+  #Df  LogLik Df  Chisq Pr(&gt;Chisq)  
+1   6 -1008.2                       
+2  10 -1003.8  4 8.9132    0.06331 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+<p>La incorporación de la variable <em>agehed</em> en el modelo mejora levemente su ajuste, aunque su efecto es limitado. Esto indica que la edad podría influir en la elección de sistemas de calefacción, especialmente en EC, aunque el resultado no es estadísticamente significativo, quedando cerca del umbral convencional de 0.05. Esto sugiere que, con una muestra más grande o un modelo algo modificado, su relevancia podría aumentar. Por lo tanto, aunque el resultado no es definitivo, merece ser considerado en futuros estudios para analizar con mayor profundidad la relación entre la edad y las preferencias de calefacción.</p>
+</section>
+</section>
+<section id="is-the-ratio-of-the-coefficient-of-installation-or-operation-cost-to-the-coefficient-of-age-of-household-head-meaningful-explain." class="level1">
+<h1>6. Is the ratio of the coefficient of installation (or operation) cost to the coefficient of age of household head meaningful? Explain.</h1>
+<p>La relación entre el coeficiente del costo de instalación y el de la edad del jefe del hogar no tiene sentido ni es estadísticamente significativa, ya que representan efectos en unidades distintas (dólares frente a años), lo que impide una comparación directa. Además, esta proporción no toma en cuenta la variabilidad ni la significancia estadística de los coeficientes. Para analizar la relevancia relativa de estas variables, es más adecuado utilizar coeficientes estandarizados, elasticidades o métodos como el análisis de contribución, en lugar de simplemente dividir los coeficientes.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
